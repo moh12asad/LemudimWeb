@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Student manger</title>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/searchbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/newbase.css' %}">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Source+Sans+Pro&display=swap" rel="stylesheet">
+
+
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+  </head>
+  <body>
+
+
+
+
+    <nav>
+      <div class="toggle">
+        <a href="{% url 'home' %}">Lemudim</a>
+             <h4> <form method='GET' action="{% url 'classroom:teachers_list' %}" class="searchme"><p>Search subject: <input type='search' name='q' placeholder='subject'></p></form></h4>
+        <i class="fa fa-bars menu"></i>
+      </div>
+    </nav>
+    <div class="sidebar">
+      <ul>
+        {% if user.is_authenticated %}
+        {% if user.is_teacher%}
+          <li> <a href="{% url 'classroom:upload_assignment' %}">Upload Assignment</a> </li>
+          <li> <a href="{% url 'classroom:assignment_list' %}">Assignment list</a> </li>
+          <li> <a href="{% url 'classroom:submit_list' %}">View Submissions</a> </li>
+          <li> <a href="{% url 'classroom:students_list' %}">All Students List</a> </li>
+          <li> <a href="{% url 'classroom:class_student_list'%}">Class Students List</a> </li>
+          <li> <a href="{% url 'classroom:write_notice' %}">Write Notice</a> </li>
+          <li> <a href="{% url 'classroom:messages_list' pk=user.pk %}">Inbox</a> </li>
+          <li> <a href="{% url 'classroom:teacher_detail' pk=user.pk %}">Profile</a> </li>
+          {% else %}
+          <li> <a href="{% url 'classroom:all_marks_list' pk=user.pk %}">Marks</a> </li>
+          <li> <a href="{% url 'classroom:class_notice' pk=user.pk %}">Class Notice</a> </li>
+          <li> <a href="{% url 'classroom:class_assignment' %}">Class Assignment</a> </li>
+          <li> <a href="{% url 'classroom:teachers_list' %}">Teacher list</a> </li>
+          <li> <a href="{% url 'classroom:student_detail' pk=user.pk %}">Profile</a> </li>
+          {% endif %}
+          <li> <a href="{% url 'classroom:change_password' %}">Change Password</a> </li>
+          <li> <a href="{% url 'classroom:logout' %}">Logout</a> </li>
+          {% else %}
+          <li><a class="head-left" href="{% url 'classroom:login' %}">Login</a></li>
+          <li><a class="head-left" href="{% url 'classroom:signup' %}">Sign Up</a></li>
+        {% endif %}
+      </ul>
+    </div>
+
+
+
+
+ <!--
+    <div class="student-list">
+
+<div class="container">
+  <form method='GET' action="{% url 'classroom:teachers_list' %}">
+  <p>Search Teacher: <input type='search' name='q' placeholder='Search'></p>
+  </form>
+  <div class="row">
+  {% for teacher in teachers_list %}
+  <div class="col-6 col-md-4">
+  <div class="student-box">
+    <div class="imgBx">
+      {% if teacher.teacher_profile_pic %}
+      <img src="{{ teacher.teacher_profile_pic.url }}" alt="">
+      {% else %}
+      {% if forloop.counter0|divisibleby:"2" %}
+      <img src="{% static 'images/login-avatar.PNG' %}" alt="">
+      {% else %}
+      <img src="{% static 'images/login-avatar-2.PNG' %}" alt="">
+      {% endif %}
+      {% endif %}
+    </div>
+    <div class="content">
+      <h3>{{ teacher.name }}</h3>
+      <p><i class="far fa-user"></i> Username: {{ teacher.user.username }}</p>
+      <p><i class="fas fa-books"></i> Subject Name: {{ teacher.subject_name }}</p>
+      <p><i class="far fa-phone"></i> Phone: {{ teacher.phone }}</p>
+      <p><i class="far fa-envelope-open-text"></i> Email ID: {{ teacher.email }}</p>
+      <a href="{% url 'classroom:write_message' pk=teacher.pk %}"><p class="add-button">Message</p> </a>
+    </div>
+  </div>
+  </div>
+  {% endfor %}
+  </div>
+</div>
+</div>
+
+-->
+
+
+
+<!--
+  <div class="jumbotron">
+    <h1>Given below is the list of all Teacher</h1>
+    <h3>Click on "message" to message teacher</h3>
+
+    <form method='GET' action="{% url 'classroom:teachers_list' %}">
+      <input type='search' name='q' placeholder='Search'>
+    </form>
+    </table>
+  </div>
+-->
+
+      {% block content %}
+      {% endblock %}
+
+
+      <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+      <script type="text/javascript">
+        $(document).ready(function(){
+          $('.menu').click(function(){
+            $('ul').toggleClass('active');
+          })
+        })
+      </script>
+
+  </body>
+</html>

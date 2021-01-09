@@ -1,0 +1,212 @@
+
+
+{% extends 'classroom/base.html' %}
+{% load static %}
+{% block content %}
+
+{% if messages %}
+<div class="alert alert-primary alert-dismissible fade show" role="alert">
+  {% for message in messages %}
+    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+  {% endfor %}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+
+<div class="banner">
+      <img src="{% static 'images/lemudim.PNG' %}" alt="">
+      <div class="content">
+        <header>Lemudim</header>
+          <br>
+
+          <br>
+        <p>הדרך הכי טובה ללמוד </p>
+
+      </div>
+    </div>
+
+    <div class="about">
+      <h1>Calculator</h1>
+      <p>האתר שלנו נותן לכל המשתמשים שלו או האורחים מחשבון פשוט , שתוכלו לחשב את הממוצע שלכם (לסטודנטים) או לחשב את הציון הסופי של כל סטודנט (למורים)</p>
+     <html>
+<head>
+   <script>
+      //function that display value
+      function dis(val)
+      {
+         document.getElementById("result").value+=val
+      }
+
+      //function that evaluates the digit and return result
+      function solve()
+      {
+         let x = document.getElementById("result").value
+         let y = eval(x)
+         document.getElementById("result").value = y
+      }
+
+      //function that clear the display
+      function clr()
+      {
+         document.getElementById("result").value = ""
+      }
+   </script>
+   <!-- for styling -->
+   <style>
+      .title{
+      margin-bottom: 10px;
+      text-align:center;
+      width: 210px;
+      color:darkred;
+      border: solid black 2px;
+      }
+
+      input[type="button"]
+      {
+      background-color:darkblue;
+      color: black;
+      border: solid black 2px;
+      width:100%
+      }
+
+      input[type="text"]
+      {
+      background-color:white;
+      border: solid black 2px;
+      width:100%
+      }
+   </style>
+</head>
+<!-- create table -->
+<body>
+   <div class = title >Lemudim Calculator</div>
+   <table border="1">
+      <tr>
+         <td colspan="3"><input type="text" id="result"/></td>
+         <!-- clr() function will call clr to clear all value -->
+         <td><input type="button" value="c" onclick="clr()"/> </td>
+      </tr>
+      <tr>
+         <!-- create button and assign value to each button -->
+         <!-- dis("1") will call function dis to display value -->
+         <td><input type="button" value="1" onclick="dis('1')"/> </td>
+         <td><input type="button" value="2" onclick="dis('2')"/> </td>
+         <td><input type="button" value="3" onclick="dis('3')"/> </td>
+         <td><input type="button" value="/" onclick="dis('/')"/> </td>
+      </tr>
+      <tr>
+         <td><input type="button" value="4" onclick="dis('4')"/> </td>
+         <td><input type="button" value="5" onclick="dis('5')"/> </td>
+         <td><input type="button" value="6" onclick="dis('6')"/> </td>
+         <td><input type="button" value="-" onclick="dis('-')"/> </td>
+      </tr>
+      <tr>
+         <td><input type="button" value="7" onclick="dis('7')"/> </td>
+         <td><input type="button" value="8" onclick="dis('8')"/> </td>
+         <td><input type="button" value="9" onclick="dis('9')"/> </td>
+         <td><input type="button" value="+" onclick="dis('+')"/> </td>
+      </tr>
+      <tr>
+         <td><input type="button" value="." onclick="dis('.')"/> </td>
+         <td><input type="button" value="0" onclick="dis('0')"/> </td>
+         <!-- solve function call function solve to evaluate value -->
+         <td><input type="button" value="=" onclick="solve()"/> </td>
+         <td><input type="button" value="*" onclick="dis('*')"/> </td>
+      </tr>
+   </table>
+</body>
+</html>
+
+     <p>תודה שהשמשתם באתר שלנו</p>
+    </div>
+
+    <div class="use-content">
+      <h1>Our Services</h1>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="box">
+            <div class="imgBx">
+              <img src="{% static 'images/abed.PNG' %}" alt="">
+            </div>
+            <div class="content">
+              <h3>למורה</h3>
+              <ol>
+                <li>כל מורה יכול להוסיף סטודנטים לכיתה שלו</li>
+                <li>אחרי שהתווסף סטודנט לכיתה ת המורה יכול לתת לו מסימה </li>
+                <li>מורים יכולים לשלוח הודעות לכל הכיתה</li>
+                <li>  מורים יכולים לתת ניקוד לכל סטודנט שבכיתה שלהם</li>
+                <li> כל מורה יכול לערוך את הציון שנתן לסטודנט</li>
+                <li>  מורה יכול להוסיף תמונת פרופייל לחשבון שלו</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="box">
+            <div class="imgBx">
+              <img src="{% static 'images/me.PNG' %}" alt="">
+            </div>
+            <div class="content">
+              <h3>לסטודנט</h3>
+              <ol>
+                <li>הסטודנט יכול לעקוב אחרי כל פעולה בכיתה</li>
+                <li>הסטודנט יכול לראות כל מה שהמורה שולח לכיתה</li>
+                <li>סטודנט יכול להוריד את כל הקבצים שהמורה שולח לכיתה</li>
+                <li> כל דטודנט יכול לשלוח הודעות למורה לכל נושא שיש </li>
+                <li>הסטודנט יכול לבדור את הציונים שנתן לו המורה</li>
+                <li>כל סטודנט יכול להוסיף תמונת פרופייל לחשבון שלו</li>
+              </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="research">
+      <div class="row">
+        <div class="col-md-4">
+    <h1>User and license agreement</h1>
+                    <h6>-----------------------------1------------------------------</h6>
+
+          <h6> יצירת הקשר בין המורה וסטודנט רק בדרך שתואמת את שניהם</h6>
+          <h6>----------------------------2-------------------------------</h6>
+          <h6> אין להקליט שיעורים ולפרסם אותם או לשלוח אותם לאחרים בלי אישור</h6>
+                    <h6>--------------------------3---------------------------------</h6>
+
+          <h6> שימוש במערכת יהיה דרך חשבון משתמש אחד ויחיד</h6>
+                    <h6>-------------------------------4----------------------------</h6>
+
+          <h6>אין לשלוח או לקשר לשירות מקורות שמכילים תכנים פורנוגרפיים או גזעניים או כל מה שנגד החוק</h6>
+                    <h6>-------------------------------5----------------------------</h6>
+
+          <h6>ביטול חשבון יהיה על חשבון המשתמש וברגע שבוטל החשבון אי אפשר להחזיר אותו</h6>
+                    <h6>---------------------------6--------------------------------</h6>
+
+          <h6>מותר להנהלת האתר לחסום כל חשבון במידה ואחד תנאי השימוש נפרצו </h6>
+        </div>
+        <div class="col-md-8">
+
+          <div class="digital-content">
+            <h1>About us</h1>
+            <br>
+            <h2> אנחנו קבוצת סטודנטים שפיתחנו את האתר הזה על מנת לעזור ולהנמיך מהקשיים שכל סטודנט מרגיש בתקופת הקורונה, המטרה שלנו לעזור לכל המשתמשים באתר זה, מקווים שתהנו ויאללה לימודים. </h2>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="social">
+      <a href="{% url 'classroom:contact' %}"><h1>Contact us</h1></a>
+      <h3>Email: Lemudim.help@hotmail.co.il</h3>
+      <h3>Phone: 04-62382233</h3>
+      <h3>Address:באר שבע,בלפור 35,קומה 11</h3>
+      <h3>Postal code:8400711</h3>
+      <h3>------------------------------------------------------</h3>
+      <h3>כל הזכיות שמורים לאתר לימודים- ©Lemudim-2021 </h3>
+    </div>
+
+{% endblock %}
+

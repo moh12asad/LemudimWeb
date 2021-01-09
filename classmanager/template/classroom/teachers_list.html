@@ -1,0 +1,75 @@
+{% extends "classroom/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="student-list">
+<div class="container">
+  <form method='GET' action="{% url 'classroom:teachers_list' %}">
+  <p>Search Teacher: <input type='search' name='q' placeholder='Search'></p>
+  </form>
+  <div class="row">
+  {% for teacher in teachers_list %}
+  <div class="col-6 col-md-4">
+  <div class="student-box">
+    <div class="imgBx">
+
+      {% if teacher.teacher_profile_pic %}
+      <img src="{{ teacher.teacher_profile_pic.url }}" alt="">
+      {% else %}
+      {% if forloop.counter0|divisibleby:"3" %}
+      <img src="{% static 'images/login-avatar.PNG' %}" alt="">
+      {% else %}
+      <img src="{% static 'images/login-avatar-2.PNG' %}" alt="">
+      {% endif %}
+      {% endif %}
+    </div>
+    <div class="content">
+      <h3>{{ teacher.name }}</h3>
+      <h5>Subject Name: {{ teacher.subject_name }}</h5>
+      <h5> Phone: {{ teacher.phone }}</h5>
+      <h5> Email ID: {{ teacher.email }}</h5>
+      <h5> Money per hour: {{ teacher.money_per_hour }}</h5>
+      <h5> Description: {{ teacher.description }}</h5>
+
+
+
+      <a href="{% url 'classroom:write_message' pk=teacher.pk %}"><p class="add-button">Message</p> </a>
+    </div>
+  </div>
+  </div>
+  {% endfor %}
+  </div>
+</div>
+</div>
+
+
+
+<!--
+  <div class="jumbotron">
+    <h1>Given below is the list of all Teacher</h1>
+    <h3>Click on "message" to message teacher</h3>
+
+    <form method='GET' action="{% url 'classroom:teachers_list' %}">
+      <input type='search' name='q' placeholder='Search'>
+    </form>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Subject</th>
+          <th scope="col"> </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for teacher in teachers_list %}
+        <tr>
+          <th>{{ teacher.name }}</th>
+          <th>{{ teacher.subject_name }}</th>
+          <th> <a class="btn btn-primary" href="{% url 'classroom:write_message' pk=teacher.pk %}">Message</a> </th>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+-->
+{% endblock %}
