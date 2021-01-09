@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from classroom.models import User, Teacher, Student, StudentMarks, MessageToTeacher, ClassNotice, ClassAssignment, SubmitAssignment
+from classroom.models import User, Teacher, Student, StudentMarks, MessageToTeacher, ClassNotice, ClassFile, SubmitFile
 from django.db import transaction
 
 
@@ -82,14 +82,14 @@ class NoticeForm(forms.ModelForm):
 
 
 ## Form for uploading or updating assignment (teachers only)
-class AssignmentForm(forms.ModelForm):
+class FileForm(forms.ModelForm):
     class Meta():
-        model = ClassAssignment
-        fields = ['assignment_name', 'assignment']
+        model = ClassFile
+        fields = ['file_name', 'file']
 
 
 ## Form for submitting assignment (Students only)
 class SubmitForm(forms.ModelForm):
     class Meta():
-        model = SubmitAssignment
+        model = SubmitFile
         fields = ['submit']

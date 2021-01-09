@@ -3,7 +3,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Student manger</title>
+    <title>Lemudim</title>
     <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 
@@ -45,8 +45,8 @@
       <ul>
         {% if user.is_authenticated %}
         {% if user.is_teacher%}
-          <li> <a href="{% url 'classroom:upload_assignment' %}">Upload Assignment</a> </li>
-          <li> <a href="{% url 'classroom:assignment_list' %}">Assignment list</a> </li>
+          <li> <a href="{% url 'classroom:upload_file' %}">Upload File</a> </li>
+          <li> <a href="{% url 'classroom:file_list' %}">File list</a> </li>
           <li> <a href="{% url 'classroom:submit_list' %}">View Submissions</a> </li>
           <li> <a href="{% url 'classroom:students_list' %}">All Students List</a> </li>
           <li> <a href="{% url 'classroom:class_student_list'%}">Class Students List</a> </li>
@@ -56,7 +56,7 @@
           {% else %}
           <li> <a href="{% url 'classroom:all_marks_list' pk=user.pk %}">Marks</a> </li>
           <li> <a href="{% url 'classroom:class_notice' pk=user.pk %}">Class Notice</a> </li>
-          <li> <a href="{% url 'classroom:class_assignment' %}">Class Assignment</a> </li>
+          <li> <a href="{% url 'classroom:class_file' %}">Class File</a> </li>
           <li> <a href="{% url 'classroom:teachers_list' %}">Teacher list</a> </li>
           <li> <a href="{% url 'classroom:student_detail' pk=user.pk %}">Profile</a> </li>
           {% endif %}

@@ -4,14 +4,14 @@
 <div class="container">
   <div class="jumbotron">
 
-{% if student.student_assignment.count == 0 %}
-  <h2>No assignments Yet</h2>
+{% if student.student_file.count == 0 %}
+  <h2>No file Yet</h2>
 {% else %}
   <table class="table">
     <thead class="thead-dark">
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Assignment Name</th>
+        <th scope="col">File Name</th>
         <th scope="col">Uploaded By</th>
         <th scope="col">Uploaded Date</th>
         <th scope="col">Download</th>
@@ -19,17 +19,17 @@
       </tr>
     </thead>
     <tbody>
-      {% for assignment in student.student_assignment.all %}
+      {% for file in student.student_file.all %}
         <tr>
           <th scope="row">{{ forloop.counter }}</th>
-          <td>{{ assignment.assignment_name }}</td>
-          <td>{{ assignment.teacher }}</td>
-          <td>{{ assignment.created_at }}</td>
-          <td><a href="{{ assignment.assignment.url }}" class="btn btn-primary" target="_blank">Download</a></td>
-          {% if assignment in assignment_list %}
+          <td>{{ file.file_name }}</td>
+          <td>{{ file.teacher }}</td>
+          <td>{{ file.created_at }}</td>
+          <td><a href="{{ file.file.url }}" class="btn btn-primary" target="_blank">Download</a></td>
+          {% if file in file_list %}
             <td>Submitted</td>
           {% else %}
-            <td><a href="{% url 'classroom:submit_assignment' id=assignment.id %}" class="btn btn-primary">Submit</a></td>
+            <td><a href="{% url 'classroom:submit_file' id=file.id %}" class="btn btn-primary">Submit</a></td>
           {% endif %}
         </tr>
       {% endfor %}
