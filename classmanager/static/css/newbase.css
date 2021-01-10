@@ -75,7 +75,7 @@
 .student-list{
   margin: 0;
   padding: 0;
-  background: url("/static/images/list-background.PNG");
+  background: dimgray;
   background-size:auto;
   background-repeat: repeat;
   width: 100%;

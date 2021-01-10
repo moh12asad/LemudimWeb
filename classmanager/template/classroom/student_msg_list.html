@@ -1,0 +1,40 @@
+
+{% extends 'classroom/base.html' %}
+{% block content %}
+
+<div class="container">
+  <div class="jumbotron">
+{% if given_msg.count == 0 %}
+<h2>You have not given any messages to {{ student.name }}.</h2>
+{% else %}
+<h3>message profile of {{ student.name }}</h3>
+
+<table class='table'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">no.</th>
+      <th scope="col">Topic</th>
+      <th scope="col">message Obtained</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for msg in given_msg %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <th>{{ msg.subject_name }}</th>
+      <th>{{ msg.msg_obtained }}</th>
+      <th> <a class="btn btn-primary" href="{% url 'classroom:update_msg' pk=msg.pk %}">Update</a> </th>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br>
+
+{% endif %}
+<p> <a class="btn btn-danger" href="{% url 'classroom:enter_msg' pk=student.pk %}">Add message</a> </p>
+
+</div>
+</div>
+
+{% endblock %}

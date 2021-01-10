@@ -40,7 +40,10 @@ class Teacher(models.Model):
     money_per_hour = models.CharField(max_length=250)
     teacher_profile_pic = models.ImageField(upload_to="classroom/teacher_profile_pic", blank=True)
     class_students = models.ManyToManyField(Student, through="StudentsInClass")
+    rate=models.IntegerField()
     description = models.TextField()
+    payment_way=models.CharField(max_length=250)
+    schedule=models.CharField(max_length=250)
 
     def get_absolute_url(self):
         return reverse('classroom:teacher_detail', kwargs={'pk': self.pk})
@@ -49,12 +52,11 @@ class Teacher(models.Model):
         return self.name
 
 
-class StudentMarks(models.Model):
-    teacher = models.ForeignKey(Teacher, related_name='given_marks', on_delete=models.CASCADE)
-    student = models.ForeignKey(Student, related_name="marks", on_delete=models.CASCADE)
+class StudentMsg(models.Model):
+    teacher = models.ForeignKey(Teacher, related_name='given_msg', on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, related_name="msg", on_delete=models.CASCADE)
     subject_name = models.CharField(max_length=250)
-    marks_obtained = models.IntegerField()
-    maximum_marks = models.IntegerField()
+    msg_obtained = models.TextField()
 
     def __str__(self):
         return self.subject_name

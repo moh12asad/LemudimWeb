@@ -10,18 +10,17 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
-from classroom.forms import UserForm,TeacherProfileForm,StudentProfileForm,MarksForm,MessageForm,NoticeForm,FileForm,SubmitForm,TeacherProfileUpdateForm,StudentProfileUpdateForm
+from classroom.forms import UserForm,TeacherProfileForm,StudentProfileForm,MsgForm,MessageForm,NoticeForm,FileForm,SubmitForm,TeacherProfileUpdateForm,StudentProfileUpdateForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout,update_session_auth_hash
 from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from classroom import models
-from classroom.models import StudentsInClass,StudentMarks,ClassFile,SubmitFile,Student,Teacher,Contact
+from classroom.models import StudentsInClass,StudentMsg,ClassFile,SubmitFile,Student,Teacher,Contact
 from django.contrib.auth.forms import PasswordChangeForm
 from django.db.models import Q
 
 
-# For Teacher Sign Up
 def TeacherSignUp(request):
     user_type = 'teacher'
     registered = False
@@ -50,7 +49,6 @@ def TeacherSignUp(request):
     return render(request,'classroom/teacher_signup.html',{'user_form':user_form,'teacher_profile_form':teacher_profile_form,'registered':registered,'user_type':user_type})
 
 
-###  For Student Sign Up
 def StudentSignUp(request):
     user_type = 'student'
     registered = False
@@ -78,7 +76,6 @@ def StudentSignUp(request):
 
     return render(request,'classroom/student_signup.html',{'user_form':user_form,'student_profile_form':student_profile_form,'registered':registered,'user_type':user_type})
 
-## Sign Up page which will ask whether you are teacher or student.
 def SignUp(request):
     return render(request,'classroom/signup.html',{})
 
@@ -104,25 +101,21 @@ def user_login(request):
     else:
         return render(request,'classroom/login.html',{})
 
-## logout view.
 @login_required
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('home'))
 
-## User Profile of student.
 class StudentDetailView(LoginRequiredMixin,DetailView):
     context_object_name = "student"
     model = models.Student
     template_name = 'classroom/student_detail_page.html'
 
-## User Profile for teacher.
 class TeacherDetailView(LoginRequiredMixin,DetailView):
     context_object_name = "teacher"
     model = models.Teacher
     template_name = 'classroom/teacher_detail_page.html'
 
-## Profile update for students.
 @login_required
 def StudentUpdateView(request,pk):
     profile_updated = False
@@ -139,7 +132,6 @@ def StudentUpdateView(request,pk):
         form = StudentProfileUpdateForm(request.POST or None,instance=student)
     return render(request,'classroom/student_update_page.html',{'profile_updated':profile_updated,'form':form})
 
-## Profile update for teachers.
 @login_required
 def TeacherUpdateView(request,pk):
     profile_updated = False
@@ -156,7 +148,6 @@ def TeacherUpdateView(request,pk):
         form = TeacherProfileUpdateForm(request.POST or None,instance=teacher)
     return render(request,'classroom/teacher_update_page.html',{'profile_updated':profile_updated,'form':form})
 
-## List of all students that teacher has added in their class.
 def class_students_list(request):
     query = request.GET.get("q", None)
     students = StudentsInClass.objects.filter(teacher=request.user.Teacher)
@@ -183,46 +174,42 @@ class ClassStudentsListView(LoginRequiredMixin,DetailView):
     template_name = "classroom/class_students_list.html"
     context_object_name = "teacher"
 
-## For Marks obtained by the student in all subjects.
-class StudentAllMarksList(LoginRequiredMixin,DetailView):
+class StudentAllMsgList(LoginRequiredMixin, DetailView):
     model = models.Student
-    template_name = "classroom/student_allmarks_list.html"
+    template_name = "classroom/student_allmsg_list.html"
     context_object_name = "student"
 
-## To give marks to a student.
 @login_required
-def add_marks(request,pk):
-    marks_given = False
+def add_msg(request, pk):
+    msg_given = False
     student = get_object_or_404(models.Student,pk=pk)
     if request.method == "POST":
-        form = MarksForm(request.POST)
+        form = MsgForm(request.POST)
         if form.is_valid():
-            marks = form.save(commit=False)
-            marks.student = student
-            marks.teacher = request.user.Teacher
-            marks.save()
-            messages.success(request,'Marks uploaded successfully!')
+            msg = form.save(commit=False)
+            msg.student = student
+            msg.teacher = request.user.Teacher
+            msg.save()
+            messages.success(request,'Msg uploaded successfully!')
             return redirect('classroom:submit_list')
     else:
-        form = MarksForm()
-    return render(request,'classroom/add_marks.html',{'form':form,'student':student,'marks_given':marks_given})
+        form = MsgForm()
+    return render(request,'classroom/add_msg.html',{'form':form,'student':student,'msg_given':msg_given})
 
-## For updating marks.
 @login_required
-def update_marks(request,pk):
-    marks_updated = False
-    obj = get_object_or_404(StudentMarks,pk=pk)
+def update_msg(request, pk):
+    msg_updated = False
+    obj = get_object_or_404(StudentMsg,pk=pk)
     if request.method == "POST":
-        form = MarksForm(request.POST,instance=obj)
+        form = MsgForm(request.POST,instance=obj)
         if form.is_valid():
-            marks = form.save(commit=False)
-            marks.save()
-            marks_updated = True
+            msg = form.save(commit=False)
+            msg.save()
+            msg_updated = True
     else:
-        form = MarksForm(request.POST or None,instance=obj)
-    return render(request,'classroom/update_marks.html',{'form':form,'marks_updated':marks_updated})
+        form = MsgForm(request.POST or None,instance=obj)
+    return render(request,'classroom/update_msg.html',{'form':form,'msg_updated':msg_updated})
 
-## For writing notice which will be sent to all class students.
 @login_required
 def add_notice(request):
     notice_sent = False
@@ -242,7 +229,6 @@ def add_notice(request):
         notice = NoticeForm()
     return render(request,'classroom/write_notice.html',{'notice':notice,'notice_sent':notice_sent})
 
-## For student writing message to teacher.
 @login_required
 def write_message(request,pk):
     message_sent = False
@@ -260,28 +246,24 @@ def write_message(request,pk):
         form = MessageForm()
     return render(request,'classroom/write_message.html',{'form':form,'teacher':teacher,'message_sent':message_sent})
 
-## For the list of all the messages teacher have received.
 @login_required
 def messages_list(request,pk):
     teacher = get_object_or_404(models.Teacher,pk=pk)
     return render(request,'classroom/messages_list.html',{'teacher':teacher})
 
-## Student can see all notice given by their teacher.
 @login_required
 def class_notice(request,pk):
     student = get_object_or_404(models.Student,pk=pk)
     return render(request,'classroom/class_notice_list.html',{'student':student})
 
-## To see the list of all the marks given by the techer to a specific student.
 @login_required
-def student_marks_list(request,pk):
+def student_msg_list(request, pk):
     error = True
     student = get_object_or_404(models.Student,pk=pk)
     teacher = request.user.Teacher
-    given_marks = StudentMarks.objects.filter(teacher=teacher,student=student)
-    return render(request,'classroom/student_marks_list.html',{'student':student,'given_marks':given_marks})
+    given_msg = StudentMsg.objects.filter(teacher=teacher,student=student)
+    return render(request,'classroom/student_msg_list.html',{'student':student,'given_msg':given_msg})
 
-## To add student in the class.
 class add_student(LoginRequiredMixin,generic.RedirectView):
 
     def get_redirect_url(self,*args,**kwargs):
@@ -303,7 +285,6 @@ class add_student(LoginRequiredMixin,generic.RedirectView):
 def student_added(request):
     return render(request,'classroom/student_added.html',{})
 
-## List of students which are not added by teacher in their class.
 def students_list(request):
     query = request.GET.get("q", None)
     students = StudentsInClass.objects.filter(teacher=request.user.Teacher)
@@ -326,7 +307,6 @@ def students_list(request):
     template = "classroom/students_list.html"
     return render(request, template, context)
 
-## List of all the teacher present in the portal.
 def teachers_list(request):
     query = request.GET.get("q", None)
     qs = Teacher.objects.all()
@@ -343,7 +323,6 @@ def teachers_list(request):
 
 ####################################################
 
-## Teacher uploading assignment.
 @login_required
 def upload_file(request):
     file_uploaded = False
@@ -362,7 +341,6 @@ def upload_file(request):
         form = FileForm()
     return render(request,'classroom/upload_file.html',{'form':form,'file_uploaded':file_uploaded})
 
-## Students getting the list of all the files uploaded by their teacher.
 @login_required
 def class_file(request):
     student = request.user.Student
@@ -370,13 +348,11 @@ def class_file(request):
     file_list = [x.submitted_file for x in file]
     return render(request,'classroom/class_file.html',{'student':student,'file_list':file_list})
 
-## List of all the files uploaded by the teacher himself.
 @login_required
 def file_list(request):
     teacher = request.user.Teacher
     return render(request,'classroom/file_list.html',{'teacher':teacher})
 
-## For updating the files later.
 @login_required
 def update_file(request, id=None):
     obj = get_object_or_404(ClassFile, id=id)
@@ -394,7 +370,6 @@ def update_file(request, id=None):
     template = "classroom/update_file.html"
     return render(request, template, context)
 
-## For deleting the assignment.
 @login_required
 def file_delete(request, id=None):
     obj = get_object_or_404(ClassFile, id=id)
@@ -408,7 +383,6 @@ def file_delete(request, id=None):
     template = "classroom/file_delete.html"
     return render(request, template, context)
 
-## For students submitting their assignment.
 @login_required
 def submit_file(request, id=None):
     student = request.user.Student
@@ -427,7 +401,6 @@ def submit_file(request, id=None):
         form = SubmitForm()
     return render(request,'classroom/submit_file.html',{'form':form,})
 
-## To see all the submissions done by the students.
 @login_required
 def submit_list(request):
     teacher = request.user.Teacher
@@ -435,7 +408,6 @@ def submit_list(request):
 
 ##################################################################################################
 
-## For changing password.
 @login_required
 def change_password(request):
     if request.method == 'POST':
@@ -462,5 +434,4 @@ def contact(request):
         desc=request.POST['desc']
         contact = Contact(name=name, email=email,phone=phone,subject=subject,desc=desc)
         contact.save()
-    #assert isinstance(request, HttpRequest)
     return render(request,'classroom/contact.html')

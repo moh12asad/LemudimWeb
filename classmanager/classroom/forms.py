@@ -1,10 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from classroom.models import User, Teacher, Student, StudentMarks, MessageToTeacher, ClassNotice, ClassFile, SubmitFile
+from classroom.models import User, Teacher, Student, StudentMsg, MessageToTeacher, ClassNotice, ClassFile, SubmitFile
 from django.db import transaction
 
 
-## User Login Form (Applied in both student and teacher login)
 class UserForm(UserCreationForm):
     class Meta():
         model = User
@@ -16,11 +15,11 @@ class UserForm(UserCreationForm):
         }
 
 
-## Teacher Registration Form 
 class TeacherProfileForm(forms.ModelForm):
     class Meta():
         model = Teacher
-        fields = ['name', 'subject_name', 'phone', 'email', 'money_per_hour', 'description']
+        fields = ['name', 'subject_name', 'phone', 'email', 'money_per_hour', 'description', 'rate', 'payment_way',
+                  'schedule']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'answer'}),
             'subject_name': forms.TextInput(attrs={'class': 'answer'}),
@@ -28,22 +27,22 @@ class TeacherProfileForm(forms.ModelForm):
             'money_per_hour': forms.NumberInput(attrs={'class': 'answer'}),
             'description': forms.TextInput(attrs={'class': 'answer'}),
             'email': forms.EmailInput(attrs={'class': 'answer'}),
+            'payment_way': forms.TextInput(attrs={'class': 'answer'}),
+            'schedule': forms.TextInput(attrs={'class': 'answer'}),
 
         }
 
 
-## Teacher Profile Update Form
 class TeacherProfileUpdateForm(forms.ModelForm):
     class Meta():
         model = Teacher
-        fields = ['name', 'subject_name', 'email', 'phone', 'teacher_profile_pic']
+        fields = ['name', 'subject_name', 'email', 'phone', 'teacher_profile_pic', 'money_per_hour']
 
 
-## Student Registration Form
 class StudentProfileForm(forms.ModelForm):
     class Meta():
         model = Student
-        fields = ['name', 'language', 'phone', 'email','student_of']
+        fields = ['name', 'language', 'phone', 'email', 'student_of']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'answer'}),
             'language': forms.TextInput(attrs={'class': 'answer'}),
@@ -53,42 +52,36 @@ class StudentProfileForm(forms.ModelForm):
         }
 
 
-## Student profile update form
 class StudentProfileUpdateForm(forms.ModelForm):
     class Meta():
         model = Student
         fields = ['name', 'language', 'email', 'phone', 'student_of', 'student_profile_pic']
 
 
-## Form for uploading marks and also for updating it.
-class MarksForm(forms.ModelForm):
+class MsgForm(forms.ModelForm):
     class Meta():
-        model = StudentMarks
-        fields = ['subject_name', 'marks_obtained', 'maximum_marks']
+        model = StudentMsg
+        fields = ['subject_name', 'msg_obtained']
 
 
-## Writing message to teacher
 class MessageForm(forms.ModelForm):
     class Meta():
         model = MessageToTeacher
         fields = ['message']
 
 
-## Writing notice in the class
 class NoticeForm(forms.ModelForm):
     class Meta():
         model = ClassNotice
         fields = ['message']
 
 
-## Form for uploading or updating assignment (teachers only)
 class FileForm(forms.ModelForm):
     class Meta():
         model = ClassFile
         fields = ['file_name', 'file']
 
 
-## Form for submitting assignment (Students only)
 class SubmitForm(forms.ModelForm):
     class Meta():
         model = SubmitFile

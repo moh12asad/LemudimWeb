@@ -54,7 +54,7 @@
           <li> <a href="{% url 'classroom:messages_list' pk=user.pk %}">Inbox</a> </li>
           <li> <a href="{% url 'classroom:teacher_detail' pk=user.pk %}">Profile</a> </li>
           {% else %}
-          <li> <a href="{% url 'classroom:all_marks_list' pk=user.pk %}">Marks</a> </li>
+          <li> <a href="{% url 'classroom:all_msg_list' pk=user.pk %}">Inbox</a> </li>
           <li> <a href="{% url 'classroom:class_notice' pk=user.pk %}">Class Notice</a> </li>
           <li> <a href="{% url 'classroom:class_file' %}">Class File</a> </li>
           <li> <a href="{% url 'classroom:teachers_list' %}">Teacher list</a> </li>

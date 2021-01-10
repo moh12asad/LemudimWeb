@@ -14,11 +14,14 @@
       <h1>{{ teacher.name }}</h1>
       <br>
       <p> Username: {{ teacher.user.username }}</p>
-      <h5> Subject Name: {{ teacher.subject_name }}</h5>
-      <h5> Phone: {{ teacher.phone }}</h5>
-      <h5> Email ID: {{ teacher.email }}</h5>
-      <h5> Money per hour: {{ teacher.money_per_hour }}</h5>
-      <h5> Description: {{ teacher.description }}</h5>
+      <h6> Subject Name: {{ teacher.subject_name }}</h6>
+      <h6> Phone: {{ teacher.phone }}</h6>
+      <h6> Email ID: {{ teacher.email }}</h6>
+      <h6> Money per hour: {{ teacher.money_per_hour }}</h6>
+      <h6> Payment Way: {{ teacher.payment_way }}</h6>
+      <h6> Rate: {{ teacher.rate }}</h6>
+      <h6> Schedule: {{ teacher.schedule }}</h6>
+      <h6> Description: {{ teacher.description }}</h6>
       <a href="{% url 'classroom:teacher_update' pk=user.pk %}"><p class="edit-button">Edit profile</p></a>
     </div>
   </div>

@@ -5,14 +5,14 @@
 {% block content %}
 <div class="container">
 <div class="jumbotron">
-  {% if marks_given %}
-  <h1>Marks added successfully.</h1>
+  {% if msg_given %}
+  <h1>Msg added successfully.</h1>
   {% else %}
-  <h1>Give Marks to {{ student.name }}</h1>
+  <h1>Give Msg to {{ student.name }}</h1>
   <form method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <input type="submit" class="btn btn-danger" name="" value="Add Marks">
+    <input type="submit" class="btn btn-danger" name="" value="Add Msg">
   </form>
   {% endif %}
 </div>
